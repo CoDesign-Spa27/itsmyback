@@ -174,6 +174,35 @@ final class PostureMonitor: NSObject, ObservableObject, UNUserNotificationCenter
     private var systemObservers: [NSObjectProtocol] = []
     private var lastSaved = Date.distantPast
 
+    static func makePreview(
+        permissionPending: Bool = false,
+        cameraDenied: Bool = false,
+        cameraError: String? = nil,
+        isRunning: Bool = false,
+        cameraReady: Bool = false,
+        pauseReason: String? = nil,
+        state: DetectionState = .needsCalibration,
+        isCalibrated: Bool = false,
+        calibrationProgress: Double = 0,
+        poseVisible: Bool = false
+    ) -> PostureMonitor {
+        let monitor = PostureMonitor()
+        monitor.permissionPending = permissionPending
+        monitor.cameraDenied = cameraDenied
+        monitor.cameraError = cameraError
+        monitor.isRunning = isRunning
+        monitor.cameraReady = cameraReady
+        monitor.pauseReasons = pauseReason.map { [$0] } ?? []
+        monitor.state = state
+        monitor.isCalibrated = isCalibrated
+        monitor.calibrationProgress = calibrationProgress
+        monitor.poseVisible = poseVisible
+        monitor.detectionHint = poseVisible
+            ? "Your face is visible. Stay comfortably upright while we learn your baseline."
+            : "Keep your head and both shoulders in view."
+        return monitor
+    }
+
     override init() {
         let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         store = LocalStore(url: support.appendingPathComponent("PostureBuddy/data.json"))
