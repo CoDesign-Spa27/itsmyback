@@ -1,0 +1,235 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1EF5048F6782F2BDCAB7CED2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDE96C56CBAC202420A47BC /* SettingsView.swift */; };
+		3E6EDD3D7AEFCCBD0CCA9D0E /* Core/PostureEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F10AD8DA86CD50F94598683 /* Core/PostureEngine.swift */; };
+		74C2431FE30C4A47C8443B80 /* Resources/AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5821C9A01ED188E80FF76F6C /* Resources/AppIcon.icns */; };
+		8EEC8D8F306D73BB006CA681 /* BrandIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EEC8D8E306D73BB006CA681 /* BrandIcon.png */; };
+		9304283A12A7F78EB66E691C /* Core/InputActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10F4F096CD0A2AD51349848 /* Core/InputActivity.swift */; };
+		A64FBD7D12ADF7198211855B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE292FE84AA565342F87F20D /* OnboardingView.swift */; };
+		A7F4BBF65FC0F70393E1EE28 /* Core/LocalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9255C1AC676311D2A9D637A /* Core/LocalData.swift */; };
+		B77703AE5772614169389772 /* PostureBuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA96F14A46A810FD9D9DCC /* PostureBuddyApp.swift */; };
+		C47E8D6DD6B8327127EE6882 /* NotchAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 640B45A83D8CBB01B1FDFD00 /* NotchAlert.swift */; };
+		CCC57ABB540C3727EE9D178D /* PostureMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C72FAA2C314E5389A3B18B /* PostureMonitor.swift */; };
+		D60C814BF95442000B04ABF4 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55800E006B42F5CDBD3B6EC /* MenuBarView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5821C9A01ED188E80FF76F6C /* Resources/AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Resources/AppIcon.icns; sourceTree = "<group>"; };
+		640B45A83D8CBB01B1FDFD00 /* NotchAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchAlert.swift; sourceTree = "<group>"; };
+		7CCA96F14A46A810FD9D9DCC /* PostureBuddyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostureBuddyApp.swift; sourceTree = "<group>"; };
+		7D1043473D55BFA90E8530D3 /* ItsMyBack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = ItsMyBack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F10AD8DA86CD50F94598683 /* Core/PostureEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/PostureEngine.swift; sourceTree = "<group>"; };
+		8EEC8D8E306D73BB006CA681 /* BrandIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrandIcon.png; sourceTree = "<group>"; };
+		C0C72FAA2C314E5389A3B18B /* PostureMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostureMonitor.swift; sourceTree = "<group>"; };
+		C10F4F096CD0A2AD51349848 /* Core/InputActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/InputActivity.swift; sourceTree = "<group>"; };
+		C9255C1AC676311D2A9D637A /* Core/LocalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/LocalData.swift; sourceTree = "<group>"; };
+		CE292FE84AA565342F87F20D /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		D55800E006B42F5CDBD3B6EC /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; usesTabs = 0; };
+		EEDE96C56CBAC202420A47BC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7561BFB015D8F536760CB671 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DC76E9F0C0006E8F919E0C51 = {
+			isa = PBXGroup;
+			children = (
+				640B45A83D8CBB01B1FDFD00 /* NotchAlert.swift */,
+				C10F4F096CD0A2AD51349848 /* Core/InputActivity.swift */,
+				5821C9A01ED188E80FF76F6C /* Resources/AppIcon.icns */,
+				7CCA96F14A46A810FD9D9DCC /* PostureBuddyApp.swift */,
+				C0C72FAA2C314E5389A3B18B /* PostureMonitor.swift */,
+				D55800E006B42F5CDBD3B6EC /* MenuBarView.swift */,
+				EEDE96C56CBAC202420A47BC /* SettingsView.swift */,
+				CE292FE84AA565342F87F20D /* OnboardingView.swift */,
+				7F10AD8DA86CD50F94598683 /* Core/PostureEngine.swift */,
+				C9255C1AC676311D2A9D637A /* Core/LocalData.swift */,
+				8EEC8D8E306D73BB006CA681 /* BrandIcon.png */,
+				FBDC4F23F93125BBEEAE800C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FBDC4F23F93125BBEEAE800C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7D1043473D55BFA90E8530D3 /* ItsMyBack.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0E8A3AD980EC179856012B7E /* PostureBuddy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C57128001CE614BF8549D6BB /* Build configuration list for PBXNativeTarget "PostureBuddy" */;
+			buildPhases = (
+				BCE16DD0260827ECF338C787 /* Sources */,
+				7561BFB015D8F536760CB671 /* Frameworks */,
+				0189424A5A60FED329FA868E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PostureBuddy;
+			productName = ItsMyBack;
+			productReference = 7D1043473D55BFA90E8530D3 /* ItsMyBack.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 2620;
+			};
+			buildConfigurationList = C81BE6FD63C7E0B780E1FA69 /* Build configuration list for PBXProject "PostureBuddy" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DC76E9F0C0006E8F919E0C51;
+			productRefGroup = FBDC4F23F93125BBEEAE800C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0E8A3AD980EC179856012B7E /* PostureBuddy */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0189424A5A60FED329FA868E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EEC8D8F306D73BB006CA681 /* BrandIcon.png in Resources */,
+				74C2431FE30C4A47C8443B80 /* Resources/AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCE16DD0260827ECF338C787 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C47E8D6DD6B8327127EE6882 /* NotchAlert.swift in Sources */,
+				9304283A12A7F78EB66E691C /* Core/InputActivity.swift in Sources */,
+				B77703AE5772614169389772 /* PostureBuddyApp.swift in Sources */,
+				CCC57ABB540C3727EE9D178D /* PostureMonitor.swift in Sources */,
+				D60C814BF95442000B04ABF4 /* MenuBarView.swift in Sources */,
+				1EF5048F6782F2BDCAB7CED2 /* SettingsView.swift in Sources */,
+				A64FBD7D12ADF7198211855B /* OnboardingView.swift in Sources */,
+				3E6EDD3D7AEFCCBD0CCA9D0E /* Core/PostureEngine.swift in Sources */,
+				A7F4BBF65FC0F70393E1EE28 /* Core/LocalData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		639A7CA24D39909E713B47F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Resources/PostureBuddy.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = JQP9A4VHG5;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sandeep.backbone;
+				PRODUCT_NAME = ItsMyBack;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		7082CC0B6FC1282FCEABD07A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Resources/PostureBuddy.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = JQP9A4VHG5;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sandeep.backbone;
+				PRODUCT_NAME = ItsMyBack;
+				REGISTER_APP = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		811CB99F7A296F7846C18A7F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		D08DD63EED508AD30D0CB0B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C57128001CE614BF8549D6BB /* Build configuration list for PBXNativeTarget "PostureBuddy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7082CC0B6FC1282FCEABD07A /* Debug */,
+				639A7CA24D39909E713B47F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C81BE6FD63C7E0B780E1FA69 /* Build configuration list for PBXProject "PostureBuddy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D08DD63EED508AD30D0CB0B4 /* Debug */,
+				811CB99F7A296F7846C18A7F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}
