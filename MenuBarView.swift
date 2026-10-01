@@ -21,7 +21,7 @@ struct MenuBarView: View {
         switch monitor.state {
         case .good: return .green
         case .slouching, .calibrationFailed: return .orange
-        case .calibrating: return .accentColor
+        case .calibrating: return AppTheme.accent
         default: return .secondary
         }
     }
@@ -134,6 +134,7 @@ struct MenuBarView: View {
         }
         .frame(width: 320)
         .background(.thinMaterial)
+        .tint(AppTheme.accent)
         .onAppear { monitor.recordInteraction() }
     }
 

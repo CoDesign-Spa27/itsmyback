@@ -16,7 +16,18 @@ struct SettingsView: View {
                         }
                         HStack { Text("More sensitive"); Spacer(); Text("More forgiving") }.font(.caption).foregroundStyle(.secondary)
                     }
-                    Stepper("Confirm after \(monitor.settings.consecutiveBadSamplesThreshold) consecutive readings", value: $monitor.settings.consecutiveBadSamplesThreshold, in: 2...10)
+                    HStack(spacing: 8) {
+                        Text("Confirm after")
+                        Text("\(monitor.settings.consecutiveBadSamplesThreshold)")
+                            .fontWeight(.bold)
+                            .monospacedDigit()
+                            .foregroundStyle(AppTheme.accent)
+                        Text("consecutive readings")
+                        Spacer()
+                        Stepper("", value: $monitor.settings.consecutiveBadSamplesThreshold, in: 2...10)
+                            .labelsHidden()
+                            .accessibilityLabel("Consecutive readings before confirmation")
+                    }
                     Picker("Check posture every", selection: $monitor.settings.sampleInterval) {
                         Text("0.5 seconds (quick)").tag(0.5)
                         Text("1 second").tag(1.0)
@@ -127,6 +138,7 @@ struct SettingsView: View {
             .tabItem { Label("Privacy", systemImage: "lock.shield") }
         }
         .frame(width: 620, height: 630)
+        .tint(AppTheme.accent)
         .alert("Clear all posture history?", isPresented: $confirmClear) {
             Button("Cancel", role: .cancel) {}
             Button("Clear history", role: .destructive) { monitor.clearHistory() }

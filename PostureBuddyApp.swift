@@ -2,11 +2,15 @@ import SwiftUI
 import AppKit
 import Combine
 
+enum AppTheme {
+    static let accent = Color(red: 58 / 255, green: 97 / 255, blue: 223 / 255)
+}
+
 @main
 struct PostureBuddyApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
-        Settings { SettingsView(monitor: appDelegate.monitor) }
+        Settings { SettingsView(monitor: appDelegate.monitor).tint(AppTheme.accent) }
     }
 }
 

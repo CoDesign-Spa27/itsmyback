@@ -2,8 +2,8 @@ import AppKit
 import SwiftUI
 import Combine
 
-// Original implementation. Motion references: boring.notch's drop.swift (spring
-// opening) and HelloAnimation.swift (reveal, then a single illuminated sweep).
+// Original implementation. Motion reference: boring.notch's drop.swift (spring
+// opening).
 // No third-party implementation or path geometry is included.
 
 private struct IslandLayout {
@@ -99,7 +99,6 @@ private final class IslandModel: ObservableObject {
     @Published var expanded = false
     @Published var contentVisible = false
     @Published var feedback: IslandFeedback = .warning
-    @Published var presentationID = UUID()
     @Published var appearance: NotchAlertAppearance = .system
     var preview = false
 }
@@ -147,7 +146,6 @@ final class NotchAlertController {
         model.feedback = feedback
         model.expanded = false
         model.contentVisible = false
-        model.presentationID = UUID()
         window.contentView = FirstClickHostingView(rootView: IslandAlertView(model: model, layout: layout, dismiss: { [weak self] in self?.dismiss() }))
         window.orderFrontRegardless()
         let reduced = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
@@ -253,8 +251,6 @@ private struct IslandAlertView: View {
     let layout: IslandLayout
     let dismiss: () -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var sweep = 0.0
-    @State private var glowOpacity = 0.0
     private var color: Color { model.feedback.color }
     private var systemColorScheme: ColorScheme {
         let appearance = NSApp?.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) ?? .aqua
@@ -290,9 +286,8 @@ private struct IslandAlertView: View {
         return LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom)
     }
     private var silhouette: UnevenRoundedRectangle {
-        UnevenRoundedRectangle(topLeadingRadius: layout.attached ? 8 : 26, bottomLeadingRadius: 26, bottomTrailingRadius: 26, topTrailingRadius: layout.attached ? 8 : 26)
+        UnevenRoundedRectangle(topLeadingRadius: layout.attached ? 0 : 26, bottomLeadingRadius: 26, bottomTrailingRadius: 26, topTrailingRadius: layout.attached ? 0 : 26)
     }
-
     @ViewBuilder
     private var surface: some View {
         if model.appearance == .liquidGlass, #available(macOS 26.0, *) {
@@ -308,16 +303,7 @@ private struct IslandAlertView: View {
         VStack(spacing: 0) {
             ZStack(alignment: .top) {
                 surface
-                    .overlay {
-                        silhouette
-                            .stroke(borderColor, lineWidth: 0.5)
-                            .mask { Rectangle().padding(.top, 1) }
-                    }
-                silhouette.trim(from: max(0, sweep - 0.22), to: sweep)
-                    .stroke(AngularGradient(colors: [color, color.opacity(0.7)], center: .center), style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
-                    .shadow(color: color.opacity(0.8), radius: 4)
-                    .opacity(glowOpacity)
-                    .allowsHitTesting(false)
+                    .overlay { silhouette.stroke(borderColor, lineWidth: 0.5) }
                 HStack(spacing: 12) {
                     Image(systemName: model.feedback.symbol)
                         .font(.system(size: 23, weight: .medium))
@@ -362,17 +348,6 @@ private struct IslandAlertView: View {
         .padding(.top, layout.topMargin)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .preferredColorScheme(forcedColorScheme)
-        .task(id: model.presentationID) {
-            guard !reduceMotion else { return }
-            do {
-                sweep = 0; glowOpacity = 0
-                try await Task.sleep(for: .milliseconds(380))
-                glowOpacity = 1
-                withAnimation(.linear(duration: 1.15)) { sweep = 1 }
-                try await Task.sleep(for: .milliseconds(1150))
-                withAnimation(.easeOut(duration: 0.25)) { glowOpacity = 0 }
-            } catch {}
-        }
     }
 }
 
