@@ -22,6 +22,9 @@ final class CameraPipeline: NSObject, AVCaptureVideoDataOutputSampleBufferDelega
     private var interval = 2.5
     private var lastSample = -Double.infinity
     private var active = false
+    // Vision requests are only accessed from `queue`, so this request can be
+    // reused safely across frames instead of allocating one per sample.
+    private var faceRequest: VNDetectFaceRectanglesRequest?
     var onSample: (@Sendable (PoseMeasurement, Int) -> Void)?
     var onStatus: (@Sendable (String?, String?, Int) -> Void)?
 
@@ -87,6 +90,7 @@ final class CameraPipeline: NSObject, AVCaptureVideoDataOutputSampleBufferDelega
         videoOutput.setSampleBufferDelegate(self, queue: queue)
         input = cameraInput
         output = videoOutput
+        faceRequest = VNDetectFaceRectanglesRequest()
         let center = NotificationCenter.default
         for name in [AVCaptureSession.runtimeErrorNotification, AVCaptureSession.wasInterruptedNotification] {
             observers.append(center.addObserver(forName: name, object: session, queue: nil) { [weak self] _ in
@@ -105,10 +109,13 @@ final class CameraPipeline: NSObject, AVCaptureVideoDataOutputSampleBufferDelega
         guard now - lastSample >= interval else { return }
         lastSample = now
         guard let buffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-        let request = VNDetectFaceRectanglesRequest()
+        guard let faceRequest else { return }
         do {
-            try VNImageRequestHandler(cvPixelBuffer: buffer, orientation: .up).perform([request])
-            let faces = (request.results ?? []).filter { $0.confidence > 0.5 && $0.boundingBox.height >= 0.08 }
+            // The handler is intentionally created per frame because it owns
+            // the current pixel buffer. The face request itself is reused by
+            // this serial camera queue.
+            try VNImageRequestHandler(cvPixelBuffer: buffer, orientation: .up).perform([faceRequest])
+            let faces = (faceRequest.results ?? []).filter { $0.confidence > 0.5 && $0.boundingBox.height >= 0.08 }
             // Multiple people are ambiguous; don't silently calibrate against a bystander.
             let measurement: PoseMeasurement
             if faces.isEmpty { measurement = PoseMeasurement(hint: "Your face is not visible yet. Face the camera and use the preview to check your position and lighting.") }
