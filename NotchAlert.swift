@@ -108,8 +108,11 @@ final class NotchAlertController {
     private let model = IslandModel()
     private var panel: IslandPanel?
     private var lifecycle: Task<Void, Never>?
+    private var trackingLostTask: Task<Void, Never>?
     private var lastPosture: DetectionState?
     private var repeatedWarning = false
+    private var warningWasShown = false
+    private var trackingLostWasShown = false
     private var screenObserver: NSObjectProtocol?
 
     init() {
@@ -119,8 +122,12 @@ final class NotchAlertController {
     }
 
     func show(preview: Bool = false, appearance: NotchAlertAppearance = .system) {
+        trackingLostTask?.cancel()
         present(preview: preview, appearance: appearance, feedback: repeatedWarning && !preview ? .reminder : .warning)
-        if !preview { repeatedWarning = true }
+        if !preview {
+            repeatedWarning = true
+            warningWasShown = true
+        }
     }
 
     private func present(preview: Bool = false, appearance: NotchAlertAppearance = .system, feedback: IslandFeedback) {
@@ -171,26 +178,69 @@ final class NotchAlertController {
         }
     }
 
-    func update(posture: DetectionState) {
+    func update(posture: DetectionState, appearance: NotchAlertAppearance) {
         guard !model.preview else { return }
         let previous = lastPosture
         lastPosture = posture
         guard previous != posture else { return }
-        if posture == .calibrating { present(appearance: model.appearance, feedback: .calibrating); return }
+
+        trackingLostTask?.cancel()
+        trackingLostTask = nil
+        model.appearance = appearance
+
+        // Face detection can miss a single frame during an ordinary movement.
+        // Keep the menu-bar state immediate, but only interrupt with an alert
+        // when tracking has remained lost briefly.
+        if posture == .noPerson {
+            trackingLostTask = Task { [weak self] in
+                do {
+                    try await Task.sleep(for: .seconds(1))
+                    guard let self, self.lastPosture == .noPerson, !self.model.preview else { return }
+                    self.trackingLostWasShown = true
+                    self.showStateFeedback(.trackingLost, appearance: appearance)
+                    self.trackingLostTask = nil
+                } catch {}
+            }
+            return
+        }
+
+        if posture == .calibrating {
+            trackingLostWasShown = false
+            present(appearance: appearance, feedback: .calibrating)
+            return
+        }
         if previous == .calibrating {
-            if posture == .good { present(appearance: model.appearance, feedback: .ready); return }
-            if posture == .calibrationFailed { present(appearance: model.appearance, feedback: .calibrationFailed); return }
+            if posture == .good { present(appearance: appearance, feedback: .ready); return }
+            if posture == .calibrationFailed { present(appearance: appearance, feedback: .calibrationFailed); return }
         }
-        if posture == .good { repeatedWarning = false }
-        guard panel?.isVisible == true else { return }
+
         switch posture {
-        case .good: transition(to: .recovered)
-        case .noPerson: transition(to: .trackingLost)
+        case .good:
+            repeatedWarning = false
+            if warningWasShown || trackingLostWasShown {
+                warningWasShown = false
+                trackingLostWasShown = false
+                showStateFeedback(.recovered, appearance: appearance)
+            }
+        case .calibrationFailed:
+            trackingLostWasShown = false
+            showStateFeedback(.calibrationFailed, appearance: appearance)
+        case .needsCalibration:
+            warningWasShown = false
+            trackingLostWasShown = false
+            dismiss()
         case .slouching:
-            if model.feedback == .recovered || model.feedback == .trackingLost { transition(to: .warning, seconds: 4) }
-        case .calibrationFailed: transition(to: .calibrationFailed)
-        default: dismiss()
+            // Warnings are opened only by show(), which is driven by the
+            // detector's confirmation threshold and reminder cooldown.
+            break
+        case .noPerson, .calibrating:
+            break
         }
+    }
+
+    private func showStateFeedback(_ feedback: IslandFeedback, appearance: NotchAlertAppearance) {
+        if panel?.isVisible == true { transition(to: feedback) }
+        else { present(appearance: appearance, feedback: feedback) }
     }
 
     private func transition(to feedback: IslandFeedback, seconds: Double = 2) {
@@ -205,6 +255,8 @@ final class NotchAlertController {
     }
 
     func dismissDetectionAlert() {
+        trackingLostTask?.cancel()
+        trackingLostTask = nil
         if !model.preview, panel?.isVisible == true, model.feedback != .paused {
             transition(to: .paused)
         }
@@ -230,6 +282,7 @@ final class NotchAlertController {
     }
 
     func shutdown() {
+        trackingLostTask?.cancel()
         lifecycle?.cancel()
         panel?.orderOut(nil)
         if let screenObserver { NotificationCenter.default.removeObserver(screenObserver) }

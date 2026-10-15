@@ -22,7 +22,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var welcomeWindow: NSWindow?
     private var observation: AnyCancellable?
     private let notchAlerts = NotchAlertController()
-    private var alertObservation: AnyCancellable?
+    private var alertStateObservation: AnyCancellable?
+    private var alertAvailabilityObservation: AnyCancellable?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
@@ -44,17 +45,32 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             guard let self else { return }
             self.notchAlerts.show(preview: true, appearance: self.monitor.settings.notchAlertAppearance)
         }
-        alertObservation = monitor.objectWillChange.sink { [weak self] _ in
+        // Observe the published state itself so the alert receives the exact
+        // transition that the menu bar is rendering. `objectWillChange` fires
+        // before a @Published value changes and is too broad for state routing.
+        alertStateObservation = monitor.$state.removeDuplicates().sink { [weak self] state in
+            DispatchQueue.main.async {
+                guard let self, self.alertsAreAvailable else { return }
+                self.notchAlerts.update(posture: state, appearance: self.monitor.settings.notchAlertAppearance)
+            }
+        }
+        alertAvailabilityObservation = monitor.objectWillChange.sink { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self else { return }
-                if !self.monitor.isRunning || !self.monitor.pauseReasons.isEmpty || !self.monitor.settings.notificationsEnabled || !self.monitor.settings.notchAlertsEnabled {
+                if !self.alertsAreAvailable {
                     self.notchAlerts.dismissDetectionAlert()
                 } else {
-                    self.notchAlerts.update(posture: self.monitor.state)
+                    // Becoming active can happen without a posture transition
+                    // (for example, resuming while tracking is already lost).
+                    self.notchAlerts.update(posture: self.monitor.state, appearance: self.monitor.settings.notchAlertAppearance)
                 }
             }
         }
         if monitor.onboardingComplete { monitor.restoreSession() } else { showWelcome() }
+    }
+
+    private var alertsAreAvailable: Bool {
+        monitor.isRunning && monitor.pauseReasons.isEmpty && monitor.settings.notificationsEnabled && monitor.settings.notchAlertsEnabled
     }
 
     private func updateIcon() {
